@@ -36,3 +36,5 @@ next-env.d.ts
 /.wrangler/
 /outputs/
 /work/
+/.site-stage-*/
+/intercon-bonos-site-*.tar.gz
