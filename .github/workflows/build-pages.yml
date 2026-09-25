@@ -30,7 +30,7 @@ jobs:
         run: |
           rm -rf assets
           cp -R pages-dist/assets ./assets
-          cp pages-dist/index.html ./index.html
+          cp pages-dist/pages.html ./index.html
           touch .nojekyll
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
