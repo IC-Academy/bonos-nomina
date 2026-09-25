@@ -4,7 +4,7 @@ import { LayoutDashboard, Inbox, ShieldCheck, Database, History, GitCompareArrow
 
 type View="inicio"|"bandeja"|"validacion"|"matriz"|"historico"|"conciliacion"|"layout"|"admin";
 type Bonus={id:string;employee:string;name:string;bonus:string;client:string;site:string;requested:number;calculated:number;support:boolean;status:"Cumple"|"Revisión"|"Falta evidencia";days:number;matched:number};
-const bonuses:Bonus[]=[
+// UX Semana 38 publicado en GitHub Pages\nconst bonuses:Bonus[]=[
 {id:"B-038-001",employee:"274816",name:"Julio César Martínez",bonus:"Ayuda de transporte",client:"Henkel",site:"Salamanca",requested:600,calculated:500,support:true,status:"Revisión",days:5,matched:4},
 {id:"B-038-002",employee:"258760",name:"Omar Espinoza Díaz",bonus:"Asistencia",client:"Operación semanal",site:"Morelia",requested:900,calculated:900,support:true,status:"Cumple",days:5,matched:5},
 {id:"B-038-003",employee:"253333",name:"Karla Vibriezca",bonus:"Acciones destacadas",client:"Cliente demo",site:"CDMX",requested:1200,calculated:1200,support:false,status:"Falta evidencia",days:0,matched:0},
