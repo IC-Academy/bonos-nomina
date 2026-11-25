@@ -99,7 +99,19 @@ El frontend **no** arma el TXT: el orden de las 20 columnas, la codificación y 
 Pendiente: el alta real debe resolver la identidad corporativa (UPN/objeto Entra ID) en el backend; el frontend no maneja correos. Fuente probable: `Bonos_Usuarios`.
 
 ## Preguntas abiertas
-1. ¿`Usuario` puede decidir movimientos y editar la matriz? El prototipo lo permite; la tabla de permisos dice "carga, consulta y entrega". Se conservó el comportamiento.
-2. Paginación y volumen esperado por periodo (236 movimientos semanales en la demo).
-3. Fuente y formato de la evidencia de asistencia (ICON).
-4. Transporte de archivos (soportes, matriz, TXT): URL firmada de SharePoint o binario vía n8n.
+1. Resuelto: Usuario no decide movimientos, no modifica matrices ni genera HUMAN. Admin decide y genera; Super Admin autoriza excepciones y publica matrices. El backend debe impedir autoaprobación.
+2. Paginación acordada: cursor opaco, límite inicial 100; implementación pendiente. El volumen real queda por verificar.
+3. Fabric preferente; ICON como alternativa autorizada. Esquema y disponibilidad pendientes.
+4. Soportes en SharePoint con acceso autenticado; TXT generado en backend. Transporte concreto pendiente.
+
+
+## Requisitos de integración productiva acordados
+
+- Identidad por tenant y Object ID de Entra ID; UPN corporativo como atributo, no identificador de autorización. Alta con identidad inequívoca.
+- Importes autoritativos en backend con decimal exacto; los números actuales de UI son sólo presentación demo.
+- Escrituras críticas requieren versión esperada (ETag o equivalente) e Idempotency-Key; conflicto de versión devuelve 409. Reintento con misma clave recupera el resultado original, sin repetir efectos.
+- Estados objetivo: creado, captura, entregado, validacion, validacion_cerrada, layout_generado, conciliado, cerrado_definitivo. El estado cerrado actual de demo equivale a validacion_cerrada; migración de tipos pendiente.
+- El cierre usa todos los movimientos del periodo, nunca únicamente la página visible. Sólo aprobación explícita y sin bloqueantes permite exportar. Reapertura crea nueva versión y conserva exportaciones previas.
+- Usuario: captura, consulta y entrega dentro de su ámbito. Admin: validación, aprobación, rechazo, cierre de validación y exportación; puede proponer matriz, no publicarla. Super Admin: excepciones, publicación de matriz, reapertura y administración. Ningún rol puede aprobar su propia solicitud.
+- La matriz actual sólo ofrece importación/publicación; se restringe a Super Admin hasta implementar el flujo separado de propuestas.
+- El contrato de backend no está implementado; no habilitar datos reales ni exportación productiva hasta validar seguridad, reglas y layout HUMAN.
