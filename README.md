@@ -1,34 +1,54 @@
-# Inter-Con Mexico | Demo de Bonos de Nomina
+# Inter-Con México | Bonos de Nómina
 
-Demo web funcional para presentar la automatizacion del proceso de bonos de nomina de Inter-Con Mexico.
+Frontend para la automatización del proceso de bonos de nómina (ABM → Nóminas → Human → Cierre).
+Hoy funciona en **modo demo** con datos ficticios; está preparado para conectarse a un backend
+productivo (previsto: n8n Cloud + SharePoint + Entra ID) sin cambiar la interfaz.
 
-## Que incluye
+## Módulos
 
-- Flujo ABM -> Nominas -> Human -> Cierre.
-- Perfiles simulados: ABM, Miriam, Frances y Administrador.
-- Periodos simulados para QNA, SEM II, IC ADMIN y Reclamos.
-- Bandeja de validacion con busqueda, filtros, correcciones y devoluciones.
-- Persistencia local con `localStorage`.
-- Descarga de layout TXT para Human y concentrado CSV.
-- Catalogos simulados y puntos de reemplazo para Microsoft 365.
+Resumen y comparativos · Bandeja de bonos · Centro de validación · Matriz de bonos · Histórico ·
+Conciliación · Layout Human · Administración.
 
-## Demo publicada
+## Modos de datos
 
-https://intercon-bonos-nomina-demo.jmejia182167.chatgpt.site
+| Variable | Valores | Efecto |
+|---|---|---|
+| `VITE_DATA_MODE` | `demo` (por defecto) · `api` | `demo` carga en diferido el adaptador con datos ficticios. `api` usa el adaptador productivo; mientras no existan endpoints, cada módulo muestra "Integración pendiente". |
+| `VITE_API_BASE_URL` | URL | Base del backend, cuando exista. |
 
-## Desarrollo local
+Ver `.env.example`. No pongas secretos en variables `VITE_*`: terminan en el navegador.
+
+## Estructura
+
+```
+app/                 entrada vinext (page.tsx → src/App) y estilos existentes
+src/main.tsx         entrada Vite (GitHub Pages)
+src/App.tsx          proveedores + shell
+src/api/contracts/   contrato API por módulo (PROPUESTA)
+src/api/adapters/    demo (datos ficticios) y unconfigured (modo productivo sin backend)
+src/api/http.ts      transporte HTTP genérico (token, timeout, errores)
+src/api/errors.ts    ApiError y mensajes al usuario
+src/api/retry.ts     reintentos con espera exponencial
+src/session/         sesión y permisos de interfaz
+src/state/           estado compartido (periodo, movimientos, avisos)
+src/hooks/           useResource (carga + reintentos) y useMutation
+src/domain/          tipos y lógica pura (sin React)
+src/components/      layout y componentes compartidos
+src/modules/         una carpeta por módulo
+docs/contrato-api-frontend.md   contrato requerido por cada módulo
+```
+
+## Desarrollo
 
 ```bash
 npm install
-npm run dev
+npm run dev           # vinext
+npm run build:pages   # build Vite que publica GitHub Pages
+npm run build         # build vinext
+npx tsc --noEmit      # verificación de tipos
 ```
 
-## Build
+## Datos
 
-```bash
-npm run build
-```
-
-## Nota de datos
-
-La aplicacion usa datos ficticios. No contiene nombres, numeros de empleado ni importes reales extraidos de documentos originales.
+El repositorio es público. Los datos demo son ficticios (`Colaborador Demo 01`, `E-10001`, `Cliente A`…).
+No subir nombres, números de empleado, clientes, importes reales ni credenciales.

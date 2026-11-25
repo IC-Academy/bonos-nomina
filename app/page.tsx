@@ -1,1 +1,2 @@
-export { default } from "./page.updated";
+"use client";
+export { default } from "../src/App";

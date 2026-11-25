@@ -29,7 +29,9 @@
     "build/**",
     "dist/**",
     "coverage/**",
-    "next-env.d.ts"
+    "next-env.d.ts",
+    "assets/**",
+    "pages-dist/**"
   ],
   "rules": {
     "no-array-constructor": "error",
