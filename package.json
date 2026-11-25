@@ -11,7 +11,8 @@
     "build:pages": "vite build --config vite.pages.config.ts",
     "start": "wrangler dev --config dist/server/wrangler.json",
     "lint": "oxlint",
-    "format": "oxfmt"
+    "format": "oxfmt",
+    "test:human": "node --test \"lib/human/__tests__/*.test.ts\""
   },
   "dependencies": {
     "react": "19.2.6",
