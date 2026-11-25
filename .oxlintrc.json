@@ -52,5 +52,11 @@
     "typescript/no-require-imports": "error",
     "typescript/no-unnecessary-type-constraint": "error",
     "typescript/no-unsafe-function-type": "error"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["lib/human/__tests__/**"],
+      "rules": { "typescript/no-floating-promises": "off" }
+    }
+  ]
 }
