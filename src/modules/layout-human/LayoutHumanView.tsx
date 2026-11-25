@@ -1,4 +1,5 @@
 "use client";
+import { useSession } from "../../session/SessionProvider";
 import { useState } from "react";
 import { useApi } from "../../api/provider";
 import { isDemo } from "../../config/env";
@@ -15,6 +16,7 @@ import { Card, Head, Kpi, downloadBlob } from "../../components/shared/ui";
  */
 export function LayoutHumanView() {
   const api = useApi();
+  const { can } = useSession();
   const { period, revision, notify, notifyError } = useWorkspace();
   const periodId = period.data?.id;
   const preview = useResource(
@@ -49,9 +51,9 @@ export function LayoutHumanView() {
                 </label>
                 <pre className="preview">{pv.previewLines.join("\n")}</pre>
                 <button
-                  disabled={!closed || !periodId || !lotId.trim() || generate.pending}
+                  disabled={!can("human.generar") || !closed || !periodId || !lotId.trim() || generate.pending}
                   onClick={async () => {
-                    if (!periodId) return;
+                    if (!periodId || !can("human.generar") || !closed) return;
                     const r = await generate.run(periodId, lotId.trim());
                     if (!r.ok) return r.error.kind === "not_configured" ? notify(r.error.message) : notifyError(r.error);
                     downloadBlob(r.data.file, r.data.fileName);
