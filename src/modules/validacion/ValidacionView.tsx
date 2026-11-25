@@ -59,6 +59,9 @@ function Validation({ items }: { items: Movement[] }) {
   const busy = decide.pending || closeValidation.pending || reopen.pending;
 
   const submit = async (decision: Decision, exception = false) => {
+    if (closed || !can("validacion.decidir")) return notify("Operación no permitida.");
+    if (exception && !can("validacion.excepcion")) return notify("La excepción requiere autorización de Super Admin.");
+    if (decision === "Aprobado" && selected.requested !== selected.calculated && !justification.trim()) return notify("Justifica la diferencia de importe.");
     const r = await decide.run({ movementId: selected.id, decision, exception, justification: justification.trim() || undefined });
     if (!r.ok) return notifyError(r.error);
     replaceMovement(r.data);
@@ -141,10 +144,10 @@ function Validation({ items }: { items: Movement[] }) {
             placeholder="Obligatorio cuando el monto autorizado difiere del solicitado o se acepta sin soporte."
           />
         </label>
-        {can("validacion.decidir") && (
+        {!closed && can("validacion.decidir") && (
           <div className="decision">
             <button
-              disabled={busy}
+              disabled={busy || (!selected.hasSupport && !can("validacion.excepcion"))}
               onClick={() =>
                 selected.hasSupport || justification.trim()
                   ? submit("Aprobado", !selected.hasSupport)
