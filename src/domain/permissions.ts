@@ -11,7 +11,9 @@ export type Permission =
   | "validacion.cerrar"
   | "periodo.reabrir"
   | "usuarios.administrar"
-  | "matriz.administrar";
+  | "matriz.administrar"
+  | "validacion.excepcion"
+  | "human.generar";
 
 const MATRIX: Record<Role, Permission[]> = {
   "Super Admin": [
@@ -22,12 +24,11 @@ const MATRIX: Record<Role, Permission[]> = {
     "periodo.reabrir",
     "usuarios.administrar",
     "matriz.administrar",
+    "validacion.excepcion",
+    "human.generar",
   ],
-  Admin: ["periodo.extender", "periodo.entregar", "validacion.decidir", "validacion.cerrar", "matriz.administrar"],
-  // Se conserva el comportamiento del prototipo. Pendiente de confirmar con
-  // el negocio si "Usuario" debe poder decidir movimientos o editar la matriz
-  // (la tabla de permisos de Administración dice "carga, consulta y entrega").
-  Usuario: ["periodo.entregar", "validacion.decidir", "matriz.administrar"],
+  Admin: ["periodo.extender", "periodo.entregar", "validacion.decidir", "validacion.cerrar", "human.generar"],
+  Usuario: ["periodo.entregar"],
 };
 
 export const permissionsFor = (role: Role): Permission[] => MATRIX[role];
